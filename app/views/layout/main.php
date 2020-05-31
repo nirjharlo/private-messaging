@@ -5,19 +5,19 @@
             <div class="row">
                 <div class="col-md-10 co-sm-12 col-xs-12 no-padding mm-toolbar-btn">
                     <div class="btn-group btn-group-sm">
-                        <a href="<?php echo esc_url(add_query_arg('box', 'inbox', get_permalink(mmg()->setting()->inbox_page))) ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=udb_page_inbox&box=inbox')); ?>"
                            class="mm-tooltip btn btn-default btn-sm <?php echo mmg()->get('box', 'inbox') == 'inbox' ? 'active' : null ?>"
                            title="<?php echo MM_Conversation_Model::count_all() ?> <?php _e("message(s)", mmg()->domain) ?>">
                             <i class="fa fa-inbox"></i> <?php _e("Inbox", mmg()->domain) ?>
                         </a>
-                        <a href="<?php echo esc_url(add_query_arg('box', 'unread', get_permalink(mmg()->setting()->inbox_page))) ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=udb_page_inbox&box=unread')) ?>"
                            class="mm-tooltip unread-count btn btn-default btn-sm <?php echo mmg()->get('box') == 'unread' ? 'active' : null ?>"
 
                            data-text="<?php _e("message(s)", mmg()->domain) ?>"
                            title="<?php echo MM_Conversation_Model::count_unread() ?> <?php _e("message(s)", mmg()->domain) ?>">
                             <i class="fa fa-envelope"></i> <?php _e("Unread", mmg()->domain) ?>
                         </a>
-                        <a href="<?php echo esc_url(add_query_arg('box', 'read', get_permalink(mmg()->setting()->inbox_page))) ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=udb_page_inbox&box=read')); ?>"
                            class="mm-tooltip btn read-count btn-default btn-sm <?php echo mmg()->get('box') == 'read' ? 'active' : null ?>"
 
                            data-text="<?php _e("message(s)", mmg()->domain) ?>"
@@ -25,11 +25,11 @@
                             <i class="glyphicon glyphicon-eye-open"></i> <?php _e("Read", mmg()->domain) ?>
                         </a>
 
-                        <a href="<?php echo esc_url(add_query_arg('box', 'sent', get_permalink(mmg()->setting()->inbox_page))) ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=udb_page_inbox&box=sent')); ?>"
                            class="btn btn-default btn-sm <?php echo mmg()->get('box') == 'sent' ? 'active' : null ?>">
                             <i class="glyphicon glyphicon-send"></i> <?php _e("Sent", mmg()->domain) ?>
                         </a>
-                        <a href="<?php echo esc_url(add_query_arg('box', 'archive', get_permalink(mmg()->setting()->inbox_page))) ?>"
+                        <a href="<?php echo esc_url(admin_url('admin.php?page=udb_page_inbox&box=archive')) ?>"
                            class="btn btn-default btn-sm <?php echo mmg()->get('box') == 'archive' ? 'active' : null ?>">
                             <i class="glyphicon glyphicon-briefcase"></i> <?php _e("Archive", mmg()->domain) ?>
                         </a>
