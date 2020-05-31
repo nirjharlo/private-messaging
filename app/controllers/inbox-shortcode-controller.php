@@ -171,36 +171,70 @@ class Inbox_Shortcode_Controller extends IG_Request
     function suggest_users()
     {
         if (!wp_verify_nonce(mmg()->get('_wpnonce'), 'mm_suggest_users')) {
-            exit;
+            //exit;
         }
         $query_string = mmg()->post('query');
-        $query = new WP_User_Query(apply_filters('mm_suggest_users_args', array(
+
+        $user_id = get_current_user_id();
+        $args = apply_filters('mm_suggest_users_args', array(
             'search' => '*' . mmg()->post('query') . '*',
             'search_columns' => array('user_login'),
-            'exclude' => array(get_current_user_id()),
+            'exclude' => array($user_id),
             'number' => 10,
             'orderby' => 'user_login',
             'order' => 'ASC'
-        )));
-        $name_query = new WP_User_Query(apply_filters('mm_suggest_users_first_last_args', array(
-            'exclude' => array(get_current_user_id()),
+        ));
+
+        $umi = get_user_meta($user_id, '_unique_matter_identifier', true);
+        $umi_args = array(
+            'meta_key' => '_unique_matter_identifier',
+            'meta_value' => $umi
+        );
+
+        $user_meta = get_userdata($user_id);
+        $user_roles = $user_meta->roles;
+
+        if (!in_array( 'administrator', (array) $user_roles ) ) {
+          $args = array_merge($args, $umi_args);
+        }
+
+        $query = new WP_User_Query($args);
+
+        $name_query_args = array(
+            'relation' => 'OR',
+            array(
+                'key' => 'first_name',
+                'value' => $query_string,
+                'compare' => 'LIKE'
+            ),
+            array(
+                'key' => 'last_name',
+                'value' => $query_string,
+                'compare' => 'LIKE'
+            )
+        );
+
+        $umi_name_query_args = array(
+          'relation' => 'AND',
+          array(
+              'key' => '_unique_matter_identifier',
+              'value' => $umi,
+              'compare' => '='
+          ),
+        );
+        if (!in_array( 'administrator', (array) $user_roles ) ) {
+          $name_query_args = array_merge(array($name_query_args), $umi_name_query_args);
+        }
+
+        $name_args = apply_filters('mm_suggest_users_first_last_args', array(
+            'exclude' => array($user_id),
             'number' => 10,
             'orderby' => 'user_login',
             'order' => 'ASC',
-            'meta_query' => array(
-                'relation' => 'OR',
-                array(
-                    'key' => 'first_name',
-                    'value' => $query_string,
-                    'compare' => 'LIKE'
-                ),
-                array(
-                    'key' => 'last_name',
-                    'value' => $query_string,
-                    'compare' => 'LIKE'
-                )
-            )
-        )));
+            'meta_query' => $name_query_args,
+        ));
+        $name_query = new WP_User_Query($name_args);
+
         $results = array_merge($query->get_results(), $name_query->get_results());
 
         $data = array();
