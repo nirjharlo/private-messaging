@@ -52,7 +52,7 @@ class Admin_Bar_Notification_Controller extends IG_Request
         $args = array(
             'id' => 'mm-inbox-button',
             'title' => __("View Inbox", mmg()->domain),
-            'href' => get_permalink(mmg()->setting()->inbox_page),
+            'href' => admin_url('admin.php?page=udb_page_inbox&box=inbox'),
             'parent' => 'mm-buttons-group',
             'meta' => array(
                 'class' => 'mm-view-inbox-admin-bar',

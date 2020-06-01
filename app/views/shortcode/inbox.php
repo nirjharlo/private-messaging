@@ -210,3 +210,5 @@
         </div>
     </div>
 <?php endif; ?>
+<?php require_once('_reply_form.php'); ?>
+<?php require_once('_compose_form.php'); ?>
